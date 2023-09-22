@@ -17,7 +17,7 @@ class Settings extends Model
 {
     public $enableReSaveElementOnElementSave = true;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['enableReSaveElementOnElementSave'], 'required'],

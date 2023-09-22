@@ -44,12 +44,12 @@ class ScheduleJob extends Date
     /**
      * @var bool Whether a datepicker should be shown as part of the input
      */
-    public $showDate = true;
+    public bool $showDate = true;
 
     /**
      * @var bool Whether a timepicker should be shown as part of the input
      */
-    public $showTime = true;
+    public bool $showTime = true;
 
     /**
      * @var job type
@@ -60,7 +60,7 @@ class ScheduleJob extends Date
     /**
      * @inheritdoc
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         // If they are both selected or nothing is selected, the select showBoth.
         if ($this->showDate && $this->showTime) {
@@ -87,7 +87,7 @@ class ScheduleJob extends Date
     }
 
 
-    public function afterElementSave(ElementInterface $element, bool $isNew)
+    public function afterElementSave(ElementInterface $element, bool $isNew): void
     {
         $date = $element->{$this->handle};
 

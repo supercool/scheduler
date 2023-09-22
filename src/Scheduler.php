@@ -121,7 +121,7 @@ class Scheduler extends Plugin
     // Protected Methods
     // =========================================================================
 
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?craft\base\Model
     {
       return new Settings();
     }

@@ -35,7 +35,7 @@ class ScheduleJobDataField extends Field implements FieldInterface {
      *
      * @return string
      */
-    public function getMappingTemplate()
+    public function getMappingTemplate(): string
     {
         return 'feed-me/_includes/fields/date';
     }
@@ -46,7 +46,7 @@ class ScheduleJobDataField extends Field implements FieldInterface {
      *
      * @return mixed
      */
-    public function parseField()
+    public function parseField(): mixed
     {
         $value = $this->fetchValue();
 
