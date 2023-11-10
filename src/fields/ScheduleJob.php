@@ -108,7 +108,7 @@ class ScheduleJob extends Date
      *
      * @return array
      */
-    private function _getTypeOptions()
+    private function _getTypeOptions(): array
     {
         $typeOptions = Scheduler::$plugin->jobs->getAvailableJobTypes();
         return $typeOptions;

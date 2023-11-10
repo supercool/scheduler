@@ -29,7 +29,7 @@ class SchedulerReSaveElementJob extends BaseSchedulerJob
 	 *
 	 * @return bool
 	 */
-	public function run()
+	public function run(): bool
 	{
 		// Get the model
 		$job = $this->model;

@@ -29,7 +29,7 @@ class CommandController extends Controller
     /**
      * Runs any pending jobs
      */
-    public function actionRun()
+    public function actionRun(): void
     {
         $sep = PHP_EOL."------------------------------".PHP_EOL;
         echo PHP_EOL."Checking scheduled jobs ...".PHP_EOL;

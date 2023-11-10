@@ -38,7 +38,7 @@ class BaseSchedulerJob extends SavableComponent implements ISchedulerJob
 	 *
 	 * @return bool
 	 */
-	public function run()
+	public function run(): bool
 	{
 		return true;
 	}

@@ -68,7 +68,7 @@ class Jobs extends Component
    *
    * @return array
    */
-  public function getAllJobIds()
+  public function getAllJobIds(): array
   {
     if (!isset($this->_allJobIds))
     {
@@ -95,7 +95,7 @@ class Jobs extends Component
    * @param string|null $indexBy
    * @return array
    */
-  public function getAllJobs($indexBy = null)
+  public function getAllJobs($indexBy = null): array
   {
     if (!$this->_fetchedAllJobs)
     {
@@ -140,7 +140,7 @@ class Jobs extends Component
    * @param $jobId
    * @return Job|null
    */
-  public function getJobById($jobId)
+  public function getJobById($jobId): ?Job
   {
     if (!isset($this->_jobsById) || !array_key_exists($jobId, $this->_jobsById))
     {
@@ -166,7 +166,7 @@ class Jobs extends Component
    *
    * @return null|array
    */
-  public function getOverdueJobs()
+  public function getOverdueJobs(): ?array
   {
     $currentTime = DateTimeHelper::currentTimeStamp();
     $currentTimeDb = Db::prepareDateForDb($currentTime);
@@ -218,7 +218,7 @@ class Jobs extends Component
    * there is a job with the same type, context and settings, in which case it
    * just updates that jobs’ date
    */
-  public function addJob($type, $date, $context = 'global', $settings = array())
+  public function addJob($type, $date, $context = 'global', $settings = array()): void
   {
     // Make the model
     $job = new Job();
@@ -255,7 +255,7 @@ class Jobs extends Component
    * @throws \Exception
    * @return bool
    */
-  public function saveJob(Job $job)
+  public function saveJob(Job $job): bool
   {
     /**
      * Don’t bother saving the job if the date has actually passed
@@ -345,7 +345,7 @@ class Jobs extends Component
    * @throws \Exception
    * @return bool
    */
-  public function deleteJobById($jobId)
+  public function deleteJobById($jobId): bool
   {
     if (!$jobId)
     {
@@ -389,7 +389,7 @@ class Jobs extends Component
    * @param JobRecord|null $jobRecord
    * @return Job|null
    */
-  private function _createJobFromRecord(JobRecord $jobRecord = null)
+  private function _createJobFromRecord(JobRecord $jobRecord = null): ?Job
   {
     if ( !$jobRecord )
     {
