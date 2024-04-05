@@ -49,7 +49,7 @@ class Scheduler extends Plugin
         self::$plugin = $this;
 
         $this->setComponents([
-          'jobs' => \supercool\scheduler\services\Jobs::class,
+            'jobs' => \supercool\scheduler\services\Jobs::class,
         ]);
 
         // Register our fields
@@ -61,58 +61,55 @@ class Scheduler extends Plugin
             }
         );
 
-        if(Craft::$app->plugins->isPluginInstalled('feed-me')) {
-            Event::on(feedMeFields::class,
+        if (Craft::$app->plugins->isPluginInstalled('feed-me')) {
+            Event::on(
+                feedMeFields::class,
                 feedMeFields::EVENT_REGISTER_FEED_ME_FIELDS,
-                function(RegisterFeedMeFieldsEvent $e) {
+                function (RegisterFeedMeFieldsEvent $e) {
                     $e->fields[] = ScheduleJobDataField::class;
-                });
+                }
+            );
         }
 
-        if ( $this->getSettings()->enableReSaveElementOnElementSave )
-        {
-          Event::on(Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT, function(Event $event) {
+        if ($this->getSettings()->enableReSaveElementOnElementSave) {
+            Event::on(Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT, function (Event $event) {
 
-            $element = $event->element;
+                $element = $event->element;
 
-            if (!$element || $element->getIsDraft() || $element->getIsRevision())
-            {
-              return true;
-            }
+                if (!$element || $element->getIsDraft() || $element->getIsRevision()) {
+                    return true;
+                }
 
-            // Work out the date the element should be re-saved due
-            // to its post or expiry date
-            $currentTime = DateTimeHelper::currentTimeStamp();
+                // Work out the date the element should be re-saved due
+                // to its post or expiry date
+                $currentTime = DateTimeHelper::currentTimeStamp();
 
-            $date = null;
-            $postDate = null;
+                $date = null;
+                $postDate = null;
 
-            if (isset($element['postDate']) && $element['postDate'])
-            {
-              $postDate = $element->postDate->getTimestamp();
-            }
+                if (isset($element['postDate']) && $element['postDate']) {
+                    $postDate = $element->postDate->getTimestamp();
+                }
 
-            $expiryDate = null;
-            if (isset($element['expiryDate']) && $element['expiryDate'])
-            {
-              $expiryDate = $element->expiryDate->getTimestamp();
-            }
+                $expiryDate = null;
+                if (isset($element['expiryDate']) && $element['expiryDate']) {
+                    $expiryDate = $element->expiryDate->getTimestamp();
+                }
 
-            if ($postDate && $postDate > $currentTime)
-            {
-              $date = $postDate;
-            } else if ($expiryDate && $expiryDate > $currentTime)
-            {
-              $date = $expiryDate;
-            }
+                // Add job for post date
+                if ($postDate && $postDate > $currentTime) {
+                    $date = $postDate;
+                    $context = 'programmatic:' . $date;
+                    $this->jobs->addJob('supercool\scheduler\jobs\SchedulerReSaveElementJob', (new \DateTime())->setTimestamp($date), $context, ['elementId' => $element->id]);
+                }
 
-            // If we have a date then add the job
-            if ( !is_null($date) )
-            {
-              $context = 'programmatic:'.$date;
-              $this->jobs->addJob('supercool\scheduler\jobs\SchedulerReSaveElementJob', (new \DateTime())->setTimestamp($date), $context, ['elementId' => $element->id]);
-            }
-          });
+                // Add job for expiry date
+                if ($expiryDate && $expiryDate > $currentTime) {
+                    $date = $expiryDate;
+                    $context = 'programmatic:' . $date;
+                    $this->jobs->addJob('supercool\scheduler\jobs\SchedulerReSaveElementJob', (new \DateTime())->setTimestamp($date), $context, ['elementId' => $element->id]);
+                }
+            });
         }
 
         Craft::info(Craft::t('scheduler', '{name} plugin loaded', ['name' => $this->name]), __METHOD__);
@@ -123,7 +120,6 @@ class Scheduler extends Plugin
 
     protected function createSettingsModel(): ?craft\base\Model
     {
-      return new Settings();
+        return new Settings();
     }
-
 }
