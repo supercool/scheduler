@@ -36,10 +36,11 @@ class SchedulerReSaveElementJob extends BaseSchedulerJob
 
         // Get the elementId from the model settings
         $elementId = $job->settings['elementId'];
+        $siteId = $job->settings['siteId'] ?? null;
 
         try {
             // Get the element model
-            $element = Craft::$app->elements->getElementById((int) $elementId);
+            $element = Craft::$app->elements->getElementById((int) $elementId, null, $siteId);
 
             // Check there was one - if not then do nothing and return true so it is removed from the queue
             if (!$element) {
@@ -64,7 +65,7 @@ class SchedulerReSaveElementJob extends BaseSchedulerJob
                 return false;
             }
         } catch (\Exception $e) {
-            Craft::error(Craft::t('scheduler', 'An exception was thrown while trying to save the element with the ID “' . $elementId . '”: ' . $e->getMessage()));
+            Craft::error(Craft::t('scheduler', 'An exception was thrown while trying to save the element with the ID “' . $elementId . '” / siteID "' . $siteId . '": ' . $e->getMessage()));
             return false;
         }
 
