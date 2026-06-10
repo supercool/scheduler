@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.4 - 2026-06-10
+### Fixed
+- Fixed an error that could occur when running the re-save job for (outdated) Matrix elements, by checking for `NestedElementInterface` rather than the legacy `MatrixBlock`/`SuperTableBlockElement` classes (integrated from verbb's fork)
+
 ## 4.0.3 - 2026-03-24
 ### Changed
 - Added siteId to SchedulerReSaveElementJob so it works with multisite

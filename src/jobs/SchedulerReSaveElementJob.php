@@ -51,9 +51,9 @@ class SchedulerReSaveElementJob extends BaseSchedulerJob
             // Now save it
             if (Craft::$app->elements->saveElement($element, false)) {
 
-                // Check if the element has an owner (MatrixBlock, SuperTableBlockElement)
-                // and if so, then save that too
-                if ($element instanceof \craft\elements\MatrixBlock || $element instanceof \verbb\supertable\elements\SuperTableBlockElement) {
+                // Check if the element has an owner (e.g. a nested Matrix or
+                // SuperTable element) and if so, then save that too
+                if ($element instanceof \craft\base\NestedElementInterface) {
                     $owner = $element->getOwner();
                     if ($owner) {
                         Craft::$app->elements->saveElement($owner, false);
